@@ -1,54 +1,52 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
-class ProfilePage extends StatelessWidget {
-  final String profileImageUrl = 'https://via.placeholder.com/150';
-  final String name = 'Nama Pengguna';
-  final String about = 'Tentang Pengguna';
-  final String phoneNumber = '0890795500';
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  File? _profileImage; // Variabel untuk menyimpan gambar profil
+
+  // Fungsi untuk memilih gambar dari galeri
+  Future<void> _pickImage() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _profileImage = File(pickedFile.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profil'),
+        title: Text('Profile'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Center(
-              child: CircleAvatar(
-                radius: 50,
-                backgroundImage: NetworkImage(profileImageUrl),
+            // Menampilkan gambar profil
+            CircleAvatar(
+              radius: 60,
+              backgroundImage: _profileImage != null
+                  ? FileImage(_profileImage!) // Jika ada gambar, tampilkan
+                  : AssetImage('assets/images/default_profile.png') as ImageProvider, // Gambar default
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _pickImage, // Memanggil fungsi untuk memilih gambar
+              child: Row(
+                mainAxisSize: MainAxisSize.min, // Menyesuaikan ukuran tombol dengan konten
+                children: [
+                  Icon(Icons.camera_alt), // Ikon kamera
+                  SizedBox(width: 8), // Jarak antara ikon dan teks
+                ],
               ),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Nama',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              name,
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Tentang',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              about,
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Nomor Telepon',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              phoneNumber,
-              style: TextStyle(fontSize: 16),
             ),
           ],
         ),

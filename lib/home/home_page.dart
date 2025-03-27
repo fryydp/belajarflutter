@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final theme = Theme.of(context); // Mendapatkan tema saat ini
 
     return Scaffold(
       appBar: AppBar(
@@ -151,29 +152,53 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.circle),
-            label: 'New Group',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.group),
-            label: 'New Broadcast',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.call),
-            label: 'Linked Devices',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.white,
-        backgroundColor: Colors.blue,
-        onTap: _onItemTapped,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: theme.bottomNavigationBarTheme.backgroundColor ?? theme.primaryColor, // Warna mengikuti tema
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ), // Membuat sudut melengkung di atas
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade600, // Warna bayangan
+              offset: Offset(0, -2), // Posisi bayangan
+              blurRadius: 4, // Tingkat blur
+            ),
+            BoxShadow(
+              color: Colors.white, // Bayangan terang untuk efek 3D
+              offset: Offset(0, 2),
+              blurRadius: 4,
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed, // Teks selalu terlihat
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.circle),
+              label: 'New Group',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.group),
+              label: 'New Broadcast',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.call),
+              label: 'Linked Devices',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: theme.bottomNavigationBarTheme.selectedItemColor ?? Colors.black, // Warna item yang dipilih mengikuti tema
+          unselectedItemColor: theme.bottomNavigationBarTheme.unselectedItemColor ?? Colors.grey, // Warna item yang tidak dipilih mengikuti tema
+          backgroundColor: Colors.transparent, // Transparan agar mengikuti warna Container
+          elevation: 0, // Hilangkan bayangan bawaan
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }
