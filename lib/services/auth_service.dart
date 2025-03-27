@@ -6,7 +6,7 @@ class AuthService {
 
   AuthService() {
     // Tambahkan pengguna default
-    _users.add(User(phoneNumber: '082179855636', password: '12345678'));
+    _users.add(User(phoneNumber: '2', password: 'dafawibu'));
   }
 
   // Fungsi untuk mendaftarkan pengguna baru
